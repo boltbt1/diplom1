@@ -5,9 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import EmployeeInterface from './pages/EmployeeInterface';
 import ResidentInterface from './pages/ResidentInterface';
-import AdminPanel from './pages/AdminPanel';
 import NotFound from './pages/NotFound';
-import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const { user } = useAuth();
@@ -19,9 +17,7 @@ function App() {
           user ? (
             <Navigate 
               to={
-                user.role === 'admin' ? '/admin' : 
-                user.role === 'employee' ? '/employee' :
-                '/resident'
+                user.role === 'resident' ? '/resident' : '/employee'
               } 
               replace 
             />
@@ -34,27 +30,22 @@ function App() {
         <Route 
           path="/resident/*" 
           element={
-            <ProtectedRoute role="resident">
+            user?.role === 'resident' ? (
               <ResidentInterface />
-            </ProtectedRoute>
+            ) : (
+              <Navigate to="/" replace />
+            )
           } 
         />
 
         <Route 
           path="/employee/*" 
           element={
-            <ProtectedRoute role="employee">
+            user?.role !== 'resident' ? (
               <EmployeeInterface />
-            </ProtectedRoute>
-          } 
-        />
-        
-        <Route 
-          path="/admin/*" 
-          element={
-            <ProtectedRoute role="admin">
-              <AdminPanel />
-            </ProtectedRoute>
+            ) : (
+              <Navigate to="/" replace />
+            )
           } 
         />
         

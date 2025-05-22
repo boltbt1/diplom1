@@ -101,7 +101,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
             </p>
           </div>
           
-          {(user.role === 'admin' || user.role === 'employee') && request.status !== 'closed' && (
+          {user.role !== 'resident' && request.status !== 'closed' && (
             <button
               className="btn btn-outline text-xs flex items-center"
               onClick={handleCloseRequest}
@@ -146,7 +146,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
           </div>
         </form>
       ) : (
-        <div className="p-4 bg-neutral-100 text-center text-neutral-600 border-t border-neutral-200">
+        <div className="p-4 bg-neutral-100 text-center text-neutral-500 border-t border-neutral-200">
           This request has been closed and no further messages can be sent.
         </div>
       )}

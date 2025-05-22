@@ -8,7 +8,8 @@ import {
   Clock,
   CheckCircle,
   Menu,
-  X
+  X,
+  Shield
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useRequests } from '../contexts/RequestsContext';
@@ -26,7 +27,7 @@ const EmployeeInterface: React.FC = () => {
   const requestsByCategory = categories.reduce((acc, category) => {
     const categoryRequests = userRequests.filter(
       req => req.categoryId === category.id
-    ).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()); // Oldest first
+    ).sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
     
     if (categoryRequests.length > 0) {
       acc[category.id] = {
@@ -48,14 +49,14 @@ const EmployeeInterface: React.FC = () => {
     const today = new Date();
     return (
       req.status === 'open' && 
-      deadline.getTime() - today.getTime() < 7 * 24 * 60 * 60 * 1000 // Less than 7 days
+      deadline.getTime() - today.getTime() < 7 * 24 * 60 * 60 * 1000
     );
   }).length;
 
   // Handle request click
   const handleRequestClick = (request: React.SetStateAction<import("../types").Request | null>) => {
     setActiveRequest(request);
-    setIsMobileMenuOpen(false); // Close mobile menu when a request is selected
+    setIsMobileMenuOpen(false);
   };
 
   // Handle logout
@@ -94,11 +95,13 @@ const EmployeeInterface: React.FC = () => {
         <div className="p-4 border-b border-neutral-200">
           <div className="flex items-center">
             <div className="p-2 rounded-full bg-primary-100 text-primary-700">
-              <User size={20} />
+              {user?.role === 'admin' ? <Shield size={20} /> : <User size={20} />}
             </div>
             <div className="ml-2">
               <p className="font-medium">{user?.fullName}</p>
-              <p className="text-xs text-neutral-500">{user?.district}</p>
+              <p className="text-xs text-neutral-500">
+                {user?.role === 'admin' ? 'Administrator' : user?.district}
+              </p>
             </div>
           </div>
         </div>
