@@ -159,3 +159,5 @@ const EmployeeInterface: React.FC = () => {
     </div>
   );
 };
+
+export default EmployeeInterface

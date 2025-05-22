@@ -148,3 +148,5 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
     </div>
   );
 };
+
+export default ChatWindow
