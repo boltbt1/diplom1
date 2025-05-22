@@ -16,9 +16,7 @@ function App() {
         <Route path="/" element={
           user ? (
             <Navigate 
-              to={
-                user.role === 'resident' ? '/resident' : '/employee'
-              } 
+              to={user.role === 'resident' ? '/resident' : '/employee'} 
               replace 
             />
           ) : (

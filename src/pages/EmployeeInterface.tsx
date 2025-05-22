@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { 
   LogOut, 
-  ChevronDown, 
-  ChevronUp, 
   User,
   Clock,
   CheckCircle,
@@ -23,7 +21,6 @@ const EmployeeInterface: React.FC = () => {
   const { userRequests, categories, activeRequest, setActiveRequest } = useRequests();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Group requests by category
   const requestsByCategory = categories.reduce((acc, category) => {
     const categoryRequests = userRequests.filter(
       req => req.categoryId === category.id
@@ -40,7 +37,6 @@ const EmployeeInterface: React.FC = () => {
     return acc;
   }, {} as Record<string, { name: string; color: string; requests: typeof userRequests }>);
 
-  // Stats
   const totalAssignedRequests = userRequests.length;
   const openRequests = userRequests.filter(req => req.status === 'open').length;
   const closedRequests = userRequests.filter(req => req.status === 'closed').length;
@@ -53,19 +49,16 @@ const EmployeeInterface: React.FC = () => {
     );
   }).length;
 
-  // Handle request click
   const handleRequestClick = (request: React.SetStateAction<import("../types").Request | null>) => {
     setActiveRequest(request);
     setIsMobileMenuOpen(false);
   };
 
-  // Handle logout
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
-  // Effect to check if we have an active request
   useEffect(() => {
     if (userRequests.length > 0 && !activeRequest) {
       setActiveRequest(userRequests[0]);
@@ -74,7 +67,6 @@ const EmployeeInterface: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-neutral-50">
-      {/* Mobile menu button */}
       <button
         className="fixed top-4 left-4 p-2 rounded-md bg-white shadow-md lg:hidden z-10"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -82,7 +74,6 @@ const EmployeeInterface: React.FC = () => {
         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
       
-      {/* Sidebar */}
       <div 
         className={`fixed inset-y-0 left-0 transform ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
@@ -106,7 +97,6 @@ const EmployeeInterface: React.FC = () => {
           </div>
         </div>
         
-        {/* Stats */}
         <div className="grid grid-cols-2 gap-2 p-4">
           <div className="card p-2 text-center">
             <p className="text-xs text-neutral-500">Assigned</p>
@@ -126,7 +116,6 @@ const EmployeeInterface: React.FC = () => {
           </div>
         </div>
         
-        {/* Request categories */}
         <div className="flex-1 overflow-y-auto p-4">
           <h2 className="font-medium mb-2 flex items-center">
             <Clock size={18} className="mr-1 text-primary-600" />
@@ -149,7 +138,6 @@ const EmployeeInterface: React.FC = () => {
           )}
         </div>
         
-        {/* Logout button */}
         <div className="p-4 border-t border-neutral-200">
           <button
             className="btn btn-outline w-full flex items-center justify-center"
@@ -161,7 +149,6 @@ const EmployeeInterface: React.FC = () => {
         </div>
       </div>
       
-      {/* Main content */}
       <div className="flex-1 flex flex-col lg:ml-0 p-4 h-screen pt-16 lg:pt-4">
         <Routes>
           <Route path="/" element={
@@ -172,5 +159,3 @@ const EmployeeInterface: React.FC = () => {
     </div>
   );
 };
-
-export default EmployeeInterface;

@@ -17,7 +17,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
   const [message, setMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [request?.messages]);
@@ -44,7 +43,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
     }
   };
 
-  // Helper function to get color for category
   const getColorForCategory = (categoryName: string): string => {
     const colorMap: Record<string, string> = {
       'Road Maintenance': '#3B82F6',
@@ -60,7 +58,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
     const deadline = parseISO(request.deadline);
     const now = new Date();
     const isExpired = deadline < now;
-    const isCloseToDeadline = !isExpired && deadline.getTime() - now.getTime() < 7 * 24 * 60 * 60 * 1000; // 7 days
+    const isCloseToDeadline = !isExpired && deadline.getTime() - now.getTime() < 7 * 24 * 60 * 60 * 1000;
     
     let color = '';
     if (isExpired) color = 'text-error-600';
@@ -76,7 +74,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
 
   return (
     <div className="flex-1 flex flex-col bg-white rounded-lg shadow-sm border border-neutral-200">
-      {/* Header */}
       <div className="px-4 py-3 border-b border-neutral-200">
         <div className="flex items-center justify-between">
           <div>
@@ -113,7 +110,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
         </div>
       </div>
       
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4">
         {request.messages.map(msg => (
           <ChatMessage 
@@ -125,7 +121,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
         <div ref={messagesEndRef} />
       </div>
       
-      {/* Message Input */}
       {request.status !== 'closed' ? (
         <form onSubmit={handleSendMessage} className="p-3 border-t border-neutral-200">
           <div className="flex">
@@ -153,5 +148,3 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ request }) => {
     </div>
   );
 };
-
-export default ChatWindow;
